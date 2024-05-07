@@ -36,6 +36,7 @@ const InfoPanel = () => {
             {ITEMS.map(({ id, title, icon }) => (
                 <div key={id}>
                     <div>{title}</div>
+
                     <div>{icon}</div>
                 </div>
             ))}

@@ -1,12 +1,13 @@
 import { useAppSelector } from "../../../../app/store/hook";
-import { selectActiveNumber } from "../../slices/rouletteSlice";
+import { selectActiveNumber, selectCurrentBet } from "../../slices/rouletteSlice";
 
 interface IInfoPanelProps {
 
 }
 
-const ITEMS = [
+type Item = { id: "balance" | "winBet" | "currentBet" | "activeNumber", title: string, icon: string };
 
+const ITEMS: Item[] = [
     {
         id: 'balance',
         title: 'Balance',
@@ -30,14 +31,18 @@ const ITEMS = [
 ]
 const InfoPanel = () => {
     const activeNumber = useAppSelector(selectActiveNumber);
+    const currentBet = useAppSelector(selectCurrentBet);
 
     return (
         <div className="flex justify-between px-4">
             {ITEMS.map(({ id, title, icon }) => (
                 <div key={id}>
                     <div>{title}</div>
-
                     <div>{icon}</div>
+                    <div>
+                        {id === 'activeNumber' && activeNumber}
+                        {id === 'currentBet' && currentBet}
+                    </div>
                 </div>
             ))}
         </div>

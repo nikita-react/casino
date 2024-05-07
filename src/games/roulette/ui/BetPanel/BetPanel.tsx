@@ -1,5 +1,5 @@
-import { selectActiveNumber } from "../../slices/rouletteSlice";
-import { useAppSelector } from "../../../../app/store/hook";
+import { setCurrentBet } from "../../slices/rouletteSlice";
+import { useAppDispatch } from "../../../../app/store/hook";
 import bet50 from '../../../../assets/roulette/bet-50.png';
 import bet100 from '../../../../assets/roulette/bet-100.png';
 import bet200 from '../../../../assets/roulette/bet-200.png';
@@ -34,24 +34,27 @@ const BETS = [
     },
 ]
 const BetPanel: React.FunctionComponent<IBetPanelProps> = () => {
-
-    const activeNumber = useAppSelector(selectActiveNumber);
+    const dispatch = useAppDispatch();
 
     const picBet = (value: number) => {
-        return value
-    }
+        dispatch(setCurrentBet(value));
+    };
+
     return (
         <div>
             <div className="flex items-center gap-3">
-                {BETS.map(({ value, img }) => {
-                    return (
-                        <div key={value} onClick={() => picBet(value)}>
-                            <img src={img} alt="" />
-                        </div>
-                    )
-                })}
+                {BETS.map(({ value, img }) => (
+                    <div className="cursor-pointer hover:scale-[1.05] transition" key={value} onClick={() => picBet(value)} onContextMenu={(e) => {
+                        e.preventDefault();
+                        picBet(-value)
+                    }
+                    } >
+                        <img src={img} alt="" />
+                    </div>
+                ))}
             </div>
         </div>
     )
 }
 export default BetPanel
+
